@@ -1,0 +1,54 @@
+# ======================================
+# Git Ignore - Projet C (Linux / Makefile)
+# ======================================
+
+# === Fichiers de compilation ===
+*.o
+*.a
+*.so
+*.out
+*.exe
+*.obj
+
+# === Binaires et exécutables ===
+main
+build/
+bin/
+debug/
+release/
+*.elf
+
+# === Fichiers générés par Make ===
+*.d
+*.dSYM/
+*.map
+*.dep
+Makefile~
+
+# === Fichiers temporaires et de logs ===
+*.log
+*.tmp
+*.swp
+*.bak
+*.old
+
+# === Dossiers temporaires ===
+tmp/
+temp/
+cache/
+
+# === Fichiers système ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# === Dossiers IDE ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === Projet spécifique (à adapter si besoin) ===
+# Par exemple, ton exécutable ProdCons
+ProdCons
+
