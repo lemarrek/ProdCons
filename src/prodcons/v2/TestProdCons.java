@@ -1,4 +1,4 @@
-package prodcons.v1;
+package prodcons.v2;
 
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
@@ -21,7 +21,7 @@ public class TestProdCons {
             int prodMin = Integer.parseInt(properties.getProperty("prodMin"));
             int prodMax = Integer.parseInt(properties.getProperty("prodMax"));
             
-            IProdConsBuffer buffer = new ProdConsBuffer(bufSize);
+            IProdConsBuffer buffer = new ProdConsBuffer(bufSize,nProd);
 
             for (int i = 0; i < nProd; i++) {
                 Thread t = new Thread(new Producer(buffer, prodMin, prodMax, prodTime));

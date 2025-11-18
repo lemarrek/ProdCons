@@ -1,5 +1,8 @@
 # PostCond
 
+![alt text](schema.png)
+
+
 ## **Objectif 1 — Solution directe**
 
 | **Opération**        | **Pré-action**                              | **Garde (condition)**        	       | **Post-action**                                          |
@@ -9,5 +12,20 @@
 
 ---
 
+## **Objectif 2 — Terminaison**
 
+---
 
+## **Objectif 3 — Terminaison**
+
+---
+
+## **Objectif 4 — Terminaison**
+
+---
+
+## **Objectif 5 — Terminaison**
+
+---
+
+## **Objectif 6 — Terminaison**
