@@ -12,41 +12,41 @@ public class ProdConsBuffer implements IProdConsBuffer {
     private int totProd;
     private int finishedProd = 0;
 
-    private Semaphore mutex;
-    private Semaphore notFull;
-    private Semaphore notEmpty;
+    private Semaphore verrou;
+    private Semaphore placesDispo;
+    private Semaphore messDispo;
 
     public ProdConsBuffer(int bufSize, int totProd) {
         this.bufSize = bufSize;
         this.totProd = totProd;
         this.buffer = new Message[bufSize];
 
-        this.mutex = new Semaphore(1);
-        this.notFull = new Semaphore(bufSize);
-        this.notEmpty = new Semaphore(0);
+        this.verrou = new Semaphore(1);
+        this.placesDispo = new Semaphore(bufSize);
+        this.messDispo = new Semaphore(0);
     }
 
     @Override
     public void put(Message m) throws InterruptedException {
-        notFull.acquire();
-        mutex.acquire();
+    	placesDispo.acquire();
+        verrou.acquire();
 
         buffer[in] = m;
         in = (in + 1) % bufSize;
         count++;
         total++;
 
-        mutex.release();
-        notEmpty.release();
+        verrou.release();
+        messDispo.release();
     }
 
     @Override
     public Message get() throws InterruptedException {
-        notEmpty.acquire();
-        mutex.acquire();   
+    	messDispo.acquire();
+        verrou.acquire();   
         if (count == 0) {
-            notEmpty.release();
-            mutex.release();
+        	messDispo.release();
+            verrou.release();
             return null;
         }
 
@@ -54,12 +54,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
         out = (out + 1) % bufSize;
         count--;
 
-        mutex.release();
-        notFull.release();
+        verrou.release();
+        placesDispo.release();
         
         return m;
     }
-    
+
 	@Override
 	public Message[] get(int k) throws InterruptedException {
 		// TODO Auto-generated method stub
@@ -79,12 +79,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
     @Override
     public void produced() {
         try {
-            mutex.acquire();
+        	verrou.acquire();
             finishedProd++;
             if (finishedProd == totProd) {
-                notEmpty.release();
+            	messDispo.release();
             }
-            mutex.release();
+            verrou.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
