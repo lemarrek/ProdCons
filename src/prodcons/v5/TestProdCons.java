@@ -17,6 +17,8 @@ public class TestProdCons {
         int consTime = Integer.parseInt(properties.getProperty("consTime"));
         int prodMin = Integer.parseInt(properties.getProperty("prodMin"));
         int prodMax = Integer.parseInt(properties.getProperty("prodMax"));
+        
+        int k = Integer.parseInt(properties.getProperty("k", "1"));
 
         IProdConsBuffer buffer = new ProdConsBuffer(bufSize, nProd);
 
@@ -27,7 +29,7 @@ public class TestProdCons {
         }
 
         for (int i = 0; i < nCons; i++) {
-            Thread t = new Thread(new Consumer(buffer, consTime));
+            Thread t = new Thread(new Consumer(buffer, consTime, k));
             t.setName("Cons-" + i);
             t.start();
         }
