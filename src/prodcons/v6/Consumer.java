@@ -1,4 +1,4 @@
-package prodcons.v5;
+package prodcons.v6;
 
 public class Consumer implements Runnable {
 
