@@ -14,18 +14,20 @@
 
 ## **Objectif 2 — Terminaison**
 
----
-
-## **Objectif 3 — Terminaison**
+Extension de l'objectif 1 pour permettre la terminaison des producteurs et consommateurs.
 
 ---
 
-## **Objectif 4 — Terminaison**
+## **Objectif 3 — Sémaphores**
 
 ---
 
-## **Objectif 5 — Terminaison**
+## **Objectif 4 — Moniteurs (avec ReentrantLock et Condition)**
 
 ---
 
-## **Objectif 6 — Terminaison**
+## **Objectif 5 — Multi-consommation**
+
+---
+
+## **Objectif 6 — Multi-exemplaires synchrone**

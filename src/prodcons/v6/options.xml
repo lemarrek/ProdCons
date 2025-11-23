@@ -4,12 +4,10 @@
     <entry key="nProd">1</entry>
     <entry key="nCons">5</entry>
     <entry key="bufSize">10</entry> 
-    <entry key="prodTime">5</entry>
+    <entry key="prodTime">50</entry>
     <entry key="consTime">50</entry>
     <entry key="prodMin">10</entry>
-    <entry key="prodMax">20</entry>
-    
-    <entry key="k">1</entry>
-    
+    <entry key="prodMax">40</entry>
+        
     <entry key="nbCopies">4</entry>
 </properties>

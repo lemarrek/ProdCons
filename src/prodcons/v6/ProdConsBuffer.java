@@ -106,6 +106,8 @@ public class ProdConsBuffer implements IProdConsBuffer {
 		if (n > bufSize) {
 			return;
 		}
+		m.setCopies(n);
+		
 		for (int i = 0; i < n; i++) {
 			put(m);
 		}
