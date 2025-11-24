@@ -45,8 +45,8 @@ public class ProdConsBuffer implements IProdConsBuffer {
     	messDispo.acquire();
         verrou.acquire();   
         if (count == 0) {
+        	verrou.release();
         	messDispo.release();
-            verrou.release();
             return null;
         }
 

@@ -1,7 +1,6 @@
 package prodcons.v6;
 
 public class Message {
-
 	private String msg;
 	private int messConsumed;
 	private int copies;

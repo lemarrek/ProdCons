@@ -1,5 +1,4 @@
 package prodcons.v6;
-
 import java.util.concurrent.Semaphore;
 
 public class ProdConsBuffer implements IProdConsBuffer {

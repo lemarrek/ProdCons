@@ -1,7 +1,6 @@
 package prodcons.v6;
 
 public class Consumer implements Runnable {
-
 	private IProdConsBuffer buffer;
 	private int consTime;
 
@@ -27,5 +26,4 @@ public class Consumer implements Runnable {
 		}
 
 	}
-
 }

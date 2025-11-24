@@ -5,7 +5,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
 public class TestProdCons {
-
+	
 	public static void main(String[] args) throws InvalidPropertiesFormatException, IOException {
 		Properties properties = new Properties();
 		properties.loadFromXML(TestProdCons.class.getClassLoader().getResourceAsStream("prodcons/v6/options.xml"));

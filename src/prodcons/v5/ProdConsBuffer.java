@@ -1,99 +1,82 @@
 package prodcons.v5;
 
-import java.util.concurrent.Semaphore;
-
 public class ProdConsBuffer implements IProdConsBuffer {
 
-	private Message[] buffer;
-	private int bufSize;
-	private int in = 0, out = 0;
-	private int count = 0, total = 0;
+    private Message[] buffer;
+    private int bufSize;
+    private int total = 0;
+    private int count = 0;
+    private int in = 0;
+    private int out = 0;
+    private int totProd;
+    private int finishedProd = 0;
 
-	private int totProd;
-	private int finishedProd = 0;
+    public ProdConsBuffer(int bufSize, int totProd) {
+        this.bufSize = bufSize;
+        this.totProd = totProd;
+        this.buffer = new Message[bufSize];
+    }
 
-	private Semaphore verrou;
-	private Semaphore placesDispo;
-	private Semaphore messDispo;
+    @Override
+    public synchronized void put(Message m) throws InterruptedException {
+        while (count == bufSize) {
+            wait();
+        }
+        buffer[in] = m;
+        in = (in + 1) % bufSize;
+        count++;
+        total++;
+        notifyAll();
+    }
 
-	public ProdConsBuffer(int bufSize, int totProd) {
-		this.bufSize = bufSize;
-		this.totProd = totProd;
-		this.buffer = new Message[bufSize];
+    @Override
+    public synchronized Message get() throws InterruptedException {
+        while (count == 0) {
+            if (finishedProd == totProd) {
+                return null;
+            }
+            wait();
+        }
+        Message m = buffer[out];
+        out = (out + 1) % bufSize;
+        count--;
+        notifyAll();
+        return m;
+    }
 
-		this.verrou = new Semaphore(1);
-		this.placesDispo = new Semaphore(bufSize);
-		this.messDispo = new Semaphore(0);
-	}
+    @Override
+    public synchronized Message[] get(int k) throws InterruptedException {
+        while (count < k) {
+            if (finishedProd == totProd) {
+                return null;
+            }
+            wait();
+        }
 
-	@Override
-	public void put(Message m) throws InterruptedException {
-		placesDispo.acquire();
-		verrou.acquire();
+        Message[] messages = new Message[k];
+        for (int i = 0; i < k; i++) {
+            messages[i] = buffer[out];
+            out = (out + 1) % bufSize;
+        }
 
-		buffer[in] = m;
-		in = (in + 1) % bufSize;
-		count++;
-		total++;
+        count -= k;
+        notifyAll();
+        return messages;
+    }
 
-		verrou.release();
-		messDispo.release();
-	}
+    @Override
+    public int nmsg() {
+        return count;
+    }
 
-	@Override
-	public Message get() throws InterruptedException {
-		messDispo.acquire();
-		verrou.acquire();
-		if (count == 0) {
-			messDispo.release();
-			verrou.release();
-			return null;
-		}
+    @Override
+    public int totmsg() {
+        return total;
+    }
 
-		Message m = buffer[out];
-		out = (out + 1) % bufSize;
-		count--;
-
-		verrou.release();
-		placesDispo.release();
-
-		return m;
-	}
-
-	@Override
-	public Message[] get(int k) throws InterruptedException {
-		Message[] mess = new Message[k];
-		for(int i=0; i<k; i++) {
-			Message m=get();
-			if(m==null) {
-				return null;
-			}
-			mess[i]=m;
-		}
-		return mess;
-	}
-
-	@Override
-	public int nmsg() {
-		return count;
-	}
-
-	@Override
-	public int totmsg() {
-		return total;
-	}
-
-	@Override
-	public void produced() {
-		try {
-			verrou.acquire();
-			finishedProd++;
-			if (finishedProd == totProd) {
-				messDispo.release();
-			}
-			verrou.release();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public synchronized void produced() {
+        finishedProd++;
+        notifyAll();
+    }
 }
