@@ -1,36 +1,40 @@
 package prodcons.v6;
 
 public class Message {
+	private String msg;
+	private int messConsumed;
+	private int copies;
 
-    private String msg;
-    private int totalCopies;
-    private int consumedCount = 0;
-    
-    public Message(String msg) {
-        this.msg = msg;
-    }
+	public Message(String msg) {
+		this.msg = msg;
+	}
 
-    public synchronized void setTotalCopies(int n) {
-        this.totalCopies = n;
-    }
+	public void printMsg() {
+		System.out.println(msg);
+	}
 
-    public synchronized boolean consume() {
-        consumedCount++;
-        return consumedCount == totalCopies;
-    }
+	public String getMsg() {
+		return msg;
+	}
 
-    public synchronized void waitUntilFinished() throws InterruptedException {
-        while (consumedCount < totalCopies) {
-            wait();
-        }
-        notifyAll();
-    }
+	public synchronized void setCopies(int n) {
+		this.copies = n;
+		this.messConsumed = 0;
+	}
 
-    public synchronized void signalFinished() {
-        notifyAll();
-    }
+	public synchronized void waitProd() throws InterruptedException {
+		while (messConsumed < copies) {
+			wait();
+		}
+	}
 
-    public String getMsg() {
-        return msg;
-    }
+	public synchronized void consumeAndWait() throws InterruptedException {
+		messConsumed++;
+		if (messConsumed < copies) {
+			wait();
+		} else {
+			notifyAll();
+		}
+	}
+
 }
