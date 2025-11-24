@@ -1,4 +1,4 @@
-package prodcons.v6;
+package prodcons.v4;
 
 public class Consumer implements Runnable {
 
@@ -15,13 +15,13 @@ public class Consumer implements Runnable {
 		try {
 			while (true) {
 				Message m = buffer.get();
-				if (m == null) {
-					break;
+				if(m == null) {
+					System.out.println("[C-" + Thread.currentThread().getName() + "] -> End of process");
+					return;
 				}
 				System.out.println("[C-" + Thread.currentThread().getName() + "] -> Consommé : " + m.getMsg());
+				Thread.sleep(consTime);
 			}
-			Thread.sleep(consTime);
-
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
