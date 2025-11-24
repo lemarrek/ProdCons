@@ -65,19 +65,6 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	}
 
 	@Override
-	public Message[] get(int k) throws InterruptedException {
-		Message[] mess = new Message[k];
-		for (int i = 0; i < k; i++) {
-			Message m = get();
-			if (m == null) {
-				return null;
-			}
-			mess[i] = m;
-		}
-		return mess;
-	}
-
-	@Override
 	public int nmsg() {
 		return count;
 	}
